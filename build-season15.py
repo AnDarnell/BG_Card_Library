@@ -188,6 +188,27 @@ for title, section in sections:
         }
         new_count += 1
 
+# The API can still return pre-patch values for changed/returning cards.
+# Keep the patch-notes values authoritative for this snapshot.
+patch_37_2_overrides = {
+    "Dream Inquisitor": {"tier": 5, "attack": 5, "health": 5},
+    "Shadowdancer": {"tier": 4, "attack": 4},
+    "Ignition Specialist": {"tier": 5},
+    "Nether Drake": {"health": 12},
+    "Gentle Djinni": {"tier": 5},
+    "Junk Jouster": {"tier": 5, "attack": 5, "health": 5},
+    "Thundering Abomination": {"tier": 5},
+    "Monstrous Macaw": {"tier": 3, "attack": 4, "health": 3},
+    "Divine Sparkbot": {"tier": 4, "health": 1},
+    "Efficient Engineer": {"tier": 5},
+    "Wizened Captain": {"tier": 6, "attack": 6, "health": 6},
+}
+for card_id, source in selected.items():
+    updates = patch_37_2_overrides.get(source.get("name"))
+    if updates:
+        source.update(updates)
+        changed_ids.add(str(card_id))
+
 cards = []
 selected_api_ids = {
     str(source["id"])
@@ -234,20 +255,23 @@ if variants:
 # Some cards refer to a token by a descriptive name instead of the token's
 # catalog name (for example, Alleycat summons a "Cat", whose card is Tabbycat).
 reference_aliases = {}
-children_by_parent = {}
-for candidate in catalog:
-    parent_id = candidate.get("parentId")
-    if parent_id is not None:
-        children_by_parent.setdefault(str(parent_id), []).append(candidate)
 number_words = "a|an|one|two|three|four|five|six|seven|eight|nine|ten"
 summoned_name_pattern = re.compile(
     rf"\bSummon(?:s)?\s+(?:(?:{number_words})\s+)?(?:\d+\s*/\s*\d+\s+)?([A-Za-z]+)\b",
     re.I,
 )
-for parent_id, source in selected.items():
+reference_tokens = [by_id[card_id] for card_id in reference_only_ids if card_id in by_id]
+for source in selected.values():
     plain_text = re.sub(r"<[^>]*>", " ", str(source.get("text") or ""))
     summon_terms = {match.group(1).lower() for match in summoned_name_pattern.finditer(plain_text)}
-    for child in children_by_parent.get(parent_id, []):
+    singular_terms = set()
+    for term in summon_terms:
+        if term.endswith("ies"):
+            singular_terms.add(term[:-3] + "y")
+        elif term.endswith("s"):
+            singular_terms.add(term[:-1])
+    summon_terms.update(singular_terms)
+    for child in reference_tokens:
         child_id = str(child["id"])
         child_name = child["name"].lower()
         for term in summon_terms:
