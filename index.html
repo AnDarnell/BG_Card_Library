@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#141615" />
+  <meta name="description" content="A Hearthstone Battlegrounds card library to search, filter, and browse card information." />
+  <title>Battlegrounds Card Library</title>
+  <link rel="icon" href="./assets/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="./assets/bob-favicon.png" sizes="256x256" />
+  <link rel="apple-touch-icon" href="./assets/bob-favicon.png" />
+  <link rel="preconnect" href="https://api.hearthstonejson.com" />
+  <link rel="preconnect" href="https://art.hearthstonejson.com" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <main class="main-content" id="library">
+      <div class="utility-row"><button class="icon-button" id="refresh-button" title="Reload card data" aria-label="Reload card data">&#8635;</button></div>
+
+      <section class="library-section" aria-label="Card library">
+        <div class="section-heading"><div><h1 class="site-title">BG Card Library</h1><h2>Browse cards <span class="total-count" id="total-count">— cards</span></h2></div><label class="sort-control">Sort: <select id="sort-select"><option value="tier">Tavern tier</option><option value="name">Name A–Z</option><option value="attack">Attack</option><option value="health">Health</option></select></label></div>
+        <div class="toolbar"><label class="search-box"><span class="search-icon">⌕</span><input id="search-input" type="search" placeholder="Search name, text, or tribe…" autocomplete="off" /><kbd>/</kbd></label><button class="filter-toggle" id="filter-toggle" aria-expanded="true"><span>☷</span> Filters <b id="filter-count" hidden>0</b></button></div>
+        <div class="filters" id="filters">
+          <div class="filter-group"><span class="filter-label">CARD TYPE</span><div class="filter-options" id="type-filters"><button class="chip selected" data-value="MINION">Minions</button><button class="chip" data-value="SPELL">Tavern spells</button></div></div>
+          <div class="filter-group"><span class="filter-label">GAME MODE</span><div class="filter-options" id="mode-filters"><button class="chip selected" data-value="SOLO">Solo</button><button class="chip" data-value="DUOS">Duos</button></div></div>
+          <div class="filter-group compact-group"><span class="filter-label">TIMEWARP</span><label class="check-filter"><input type="checkbox" id="timewarp-filter" /><span class="star-small">✦</span> Only Timewarp cards</label></div>
+          <div class="filter-group"><span class="filter-label">TRIBE</span><div class="filter-options" id="tribe-filters"><button class="chip tribe-chip selected" data-value="all">All tribes</button></div></div>
+          <div class="filter-group compact-group"><label class="filter-label" id="tier-label" for="tier-filter">TAVERN TIER</label><select id="tier-filter" class="filter-select"><option value="all">All tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option><option value="6">Tier 6</option><option value="7">Tier 7</option></select></div>
+          <div class="filter-group compact-group"><label class="filter-label" for="keyword-filter">KEYWORD</label><select id="keyword-filter" class="filter-select"><option value="all">All keywords</option></select></div>
+          <button class="clear-filters" id="clear-filters">Clear</button>
+        </div>
+        <div class="active-filters" id="active-filters"></div>
+        <div class="results-meta"><span id="results-label">Loading card data</span><span class="api-status" id="api-status"><i></i> CONNECTING</span></div>
+        <div class="card-grid" id="card-grid" aria-live="polite"></div>
+        <div class="empty-state" id="empty-state" hidden><span>✳</span><h3>No cards match these filters</h3><p>Try changing your search or clearing the filters.</p><button class="button-secondary" id="empty-clear">Clear filters</button></div>
+        <div class="load-error" id="load-error" hidden><span>◌</span><h3>Card data unavailable</h3><p>The Season 15 card list could not be loaded. Make sure the app is running on a local web server, then try again.</p><button class="button-secondary" id="retry-button">Try again</button></div>
+      </section>
+      <footer class="footer-note">An unofficial Battlegrounds fan project. Hearthstone and all card art belong to Blizzard Entertainment.</footer>
+    </main>
+  </div>
+  <div class="card-modal" id="card-modal" hidden>
+    <button class="card-modal-backdrop" data-action="close-modal" aria-label="Close card details" tabindex="-1"></button>
+    <section class="card-detail" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <button class="detail-close" data-action="close-modal" aria-label="Close">×</button>
+      <div class="detail-art"><img id="detail-image" alt="" onerror="imageFallback(this)" /></div>
+      <div class="detail-copy"><p class="detail-kicker" id="detail-kicker"></p><h2 id="detail-title"></h2><div class="detail-stats" id="detail-stats"></div><p class="detail-text" id="detail-text"></p></div>
+    </section>
+  </div>
+  <aside class="reference-popover" id="reference-popover" role="tooltip" hidden>
+    <img id="reference-image" alt="" onerror="imageFallback(this)" />
+    <div class="reference-copy"><strong id="reference-title"></strong><small id="reference-kicker"></small><p id="reference-text"></p></div>
+  </aside>
+</body>
+</html>
