@@ -231,6 +231,29 @@ if variants:
         for match in mention_pattern.finditer(str(source.get("text") or "")):
             reference_only_ids.add(variants[match.group(0).lower()])
 
+# Some cards refer to a token by a descriptive name instead of the token's
+# catalog name (for example, Alleycat summons a "Cat", whose card is Tabbycat).
+reference_aliases = {}
+children_by_parent = {}
+for candidate in catalog:
+    parent_id = candidate.get("parentId")
+    if parent_id is not None:
+        children_by_parent.setdefault(str(parent_id), []).append(candidate)
+number_words = "a|an|one|two|three|four|five|six|seven|eight|nine|ten"
+summoned_name_pattern = re.compile(
+    rf"\bSummon(?:s)?\s+(?:(?:{number_words})\s+)?(?:\d+\s*/\s*\d+\s+)?([A-Za-z]+)\b",
+    re.I,
+)
+for parent_id, source in selected.items():
+    plain_text = re.sub(r"<[^>]*>", " ", str(source.get("text") or ""))
+    summon_terms = {match.group(1).lower() for match in summoned_name_pattern.finditer(plain_text)}
+    for child in children_by_parent.get(parent_id, []):
+        child_id = str(child["id"])
+        child_name = child["name"].lower()
+        for term in summon_terms:
+            if term != child_name and child_name.endswith(term):
+                reference_aliases.setdefault(child_id, set()).add(term.title())
+
 for card_id, source in selected.items():
     card = dict(source)
     races = card.get("minionTypes") or []
@@ -298,6 +321,7 @@ for card_id in sorted(reference_only_ids):
             "isSolosOnly": bool(card.get("isSolosOnly", False)),
             "isToken": True,
             "isReferenceOnly": True,
+            "referenceAliases": sorted(reference_aliases.get(card_id, [])),
         }
     )
 

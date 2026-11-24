@@ -70,9 +70,15 @@
   }
   function findCardReferences(card) {
     const text = cleanText(card.text);
-    const candidates = state.cards.filter((candidate) => String(candidate.dbfId) !== String(card.dbfId)).sort((a, b) => b.name.length - a.name.length);
+    const candidates = state.cards.filter((candidate) => String(candidate.dbfId) !== String(card.dbfId) && candidate.name !== 'Triple Reward').sort((a, b) => b.name.length - a.name.length);
     const byVariant = new Map();
     candidates.forEach((candidate) => cardNameVariants(candidate.name).forEach((variant) => byVariant.set(variant.toLocaleLowerCase('en'), candidate)));
+    candidates.forEach((candidate) => (candidate.referenceAliases || []).forEach((alias) => {
+      cardNameVariants(alias).forEach((variant) => {
+        const key = variant.toLocaleLowerCase('en');
+        if (!byVariant.has(key)) byVariant.set(key, candidate);
+      });
+    }));
     const names = [...byVariant.keys()].sort((a, b) => b.length - a.length).map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     if (!names.length) return [];
     const pattern = new RegExp(`(?<![\\p{L}\\p{N}])(${names.join('|')})(?![\\p{L}\\p{N}])`, 'giu');
