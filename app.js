@@ -281,8 +281,6 @@
   els.detailText.addEventListener('focusin', (event) => { const reference = event.target.closest('.card-reference'); if (reference) showReference(reference.dataset.referenceId, reference); });
   els.detailText.addEventListener('focusout', scheduleHideReference);
   els.detailText.addEventListener('click', (event) => { const reference = event.target.closest('.card-reference'); if (reference) showReference(reference.dataset.referenceId, reference); });
-  els.referencePopover.addEventListener('pointerenter', () => clearTimeout(referenceHideTimer));
-  els.referencePopover.addEventListener('pointerleave', scheduleHideReference);
   document.addEventListener('click', (event) => { if (!event.target.closest('.card-reference') && !event.target.closest('#reference-popover')) els.referencePopover.hidden = true; });
   els.modal.addEventListener('click', (event) => {
     const button = event.target.closest('[data-action]'); if (!button) return;

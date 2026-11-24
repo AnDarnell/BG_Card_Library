@@ -290,7 +290,7 @@ for card_id, source in selected.items():
             "isReturning": str(card_id) in returning_ids,
             "isDuosOnly": bool(card.get("isDuosOnly", False)),
             "isSolosOnly": bool(card.get("isSolosOnly", False)),
-            "isReferenceOnly": False,
+            "isReferenceOnly": card.get("parentId") is not None,
         }
     )
 
