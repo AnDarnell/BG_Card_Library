@@ -195,12 +195,12 @@ patch_37_2_overrides = {
     "Shadowdancer": {"tier": 4, "attack": 4},
     "Ignition Specialist": {"tier": 5},
     "Nether Drake": {"health": 12},
-    "Gentle Djinni": {"tier": 5},
+    "Gentle Djinni": {"tier": 5, "keywords": ["Taunt", "Deathrattle"]},
     "Junk Jouster": {"tier": 5, "attack": 5, "health": 5},
     "Thundering Abomination": {"tier": 5},
     "Monstrous Macaw": {"tier": 3, "attack": 4, "health": 3},
     "Divine Sparkbot": {"tier": 4, "health": 1},
-    "Efficient Engineer": {"tier": 5},
+    "Efficient Engineer": {"tier": 5, "keywords": []},
     "Wizened Captain": {"tier": 6, "attack": 6, "health": 6},
 }
 for card_id, source in selected.items():

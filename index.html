@@ -17,7 +17,7 @@
 <body>
   <div class="app-shell">
     <main class="main-content" id="library">
-      <div class="utility-row"><button class="icon-button" id="refresh-button" title="Reload card data" aria-label="Reload card data">&#8635;</button></div>
+      <div class="utility-row"><a class="source-credit-top" href="https://hsbg.cards" target="_blank" rel="noopener noreferrer">Data via HS BG Cards</a><button class="icon-button" id="refresh-button" title="Reload card data" aria-label="Reload card data">&#8635;</button></div>
 
       <section class="library-section" aria-label="Card library">
         <div class="section-heading"><div><h1 class="site-title">BG Card Library</h1><h2>Browse cards <span class="total-count" id="total-count">— cards</span></h2></div><label class="sort-control">Sort: <select id="sort-select"><option value="tier">Tavern tier</option><option value="name">Name A–Z</option><option value="attack">Attack</option><option value="health">Health</option></select></label></div>
@@ -37,7 +37,7 @@
         <div class="empty-state" id="empty-state" hidden><span>✳</span><h3>No cards match these filters</h3><p>Try changing your search or clearing the filters.</p><button class="button-secondary" id="empty-clear">Clear filters</button></div>
         <div class="load-error" id="load-error" hidden><span>◌</span><h3>Card data unavailable</h3><p>The Season 15 card list could not be loaded. Make sure the app is running on a local web server, then try again.</p><button class="button-secondary" id="retry-button">Try again</button></div>
       </section>
-      <footer class="footer-note">An unofficial Battlegrounds fan project. Hearthstone and all card art belong to Blizzard Entertainment.</footer>
+      <footer class="footer-note">Card data and artwork via <a href="https://hsbg.cards" target="_blank" rel="noopener noreferrer">HS BG Cards</a>. Hearthstone card art and game content &copy; Blizzard Entertainment.</footer>
     </main>
   </div>
   <div class="card-modal" id="card-modal" hidden>
