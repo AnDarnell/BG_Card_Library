@@ -14,7 +14,7 @@
   };
   const state = { cards: [], type: 'MINION', mode: 'SOLO', tribe: 'all', tier: 'all', keyword: 'all', search: '', sort: 'tier', includeTimewarp: false };
   const tribeNames = { ABERRATION: 'Aberrations', BEAST: 'Beast', DEMON: 'Demon', DRAGON: 'Dragon', ELEMENTAL: 'Elemental', MECHANICAL: 'Mech', MECH: 'Mech', MURLOC: 'Murloc', NAGA: 'Naga', PIRATE: 'Pirate', QUILBOAR: 'Quilboar', UNDEAD: 'Undead', NEUTRAL: 'Neutral', ALL: 'All', PET: 'Pet' };
-  const mechanicNames = { ACTIVATE: 'Activate', AURA: 'Aura', AVENGE: 'Avenge', BATTLECRY: 'Battlecry', CHOOSE_ONE: 'Choose One', DEATHRATTLE: 'Deathrattle', DISCOVER: 'Discover', DIVINE_SHIELD: 'Divine Shield', END_OF_TURN: 'End of Turn', LIFESTEAL: 'Lifesteal', MAGNETIC: 'Magnetic', MISSION: 'Mission', PASS: 'Pass', POISONOUS: 'Venomous', RALLY: 'Rally', REBORN: 'Reborn', REFRESH: 'Refresh', RESILIENT: 'Resilient', SPELLCRAFT: 'Spellcraft', START_OF_COMBAT: 'Start of Combat', START_OF_TURN: 'Start of Turn', STEALTH: 'Stealth', TAUNT: 'Taunt', VENOMOUS: 'Venomous', WINDFURY: 'Windfury' };
+  const mechanicNames = { ACTIVATE: 'Activate', AURA: 'Aura', AVENGE: 'Avenge', BATTLECRY: 'Battlecry', CHOOSE_ONE: 'Choose One', DEATHRATTLE: 'Deathrattle', DISCOVER: 'Discover', DIVINE_SHIELD: 'Divine Shield', END_OF_TURN: 'End of Turn', LIFESTEAL: 'Lifesteal', MAGNETIC: 'Magnetic', MISSION: 'Mission', PASS: 'Pass', RALLY: 'Rally', REBORN: 'Reborn', REFRESH: 'Refresh', RESILIENT: 'Resilient', SPELLCRAFT: 'Spellcraft', START_OF_COMBAT: 'Start of Combat', START_OF_TURN: 'Start of Turn', STEALTH: 'Stealth', TAUNT: 'Taunt', VENOMOUS: 'Venomous', WINDFURY: 'Windfury' };
   const nonCardReferenceNames = new Set(['AVENGE', 'TRIPLE REWARD']);
   const keywordCache = new WeakMap();
 
@@ -23,7 +23,10 @@
   function filterTribes(card) { const tribes = races(card); if (tribes.includes('ALL')) return ['ALL']; return tribes.length ? tribes : card.type === 'MINION' ? ['NEUTRAL'] : []; }
   function cardKeywords(card) {
     if (keywordCache.has(card)) return keywordCache.get(card);
-    const found = new Set((card.mechanics || []).map((keyword) => String(keyword).toUpperCase().replace(/[ -]+/g, '_')));
+    const found = new Set((card.mechanics || []).map((keyword) => {
+      const normalized = String(keyword).toUpperCase().replace(/[ -]+/g, '_');
+      return normalized === 'POISONOUS' ? 'VENOMOUS' : normalized;
+    }));
     const text = cleanText(card.text);
     Object.entries(mechanicNames).forEach(([key, label]) => {
       const phrase = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
