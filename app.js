@@ -13,7 +13,7 @@
     referencePopover: $('#reference-popover'), referenceImage: $('#reference-image'), referenceTitle: $('#reference-title'), referenceKicker: $('#reference-kicker'), referenceText: $('#reference-text'),
   };
   const state = { cards: [], type: 'MINION', mode: 'SOLO', tribe: 'all', tier: 'all', keyword: 'all', search: '', sort: 'tier', includeTimewarp: false };
-  const tribeNames = { ABERRATION: 'Aberrations', BEAST: 'Beast', DEMON: 'Demon', DRAGON: 'Dragon', ELEMENTAL: 'Elemental', MECHANICAL: 'Mech', MECH: 'Mech', MURLOC: 'Murloc', NAGA: 'Naga', PIRATE: 'Pirate', QUILBOAR: 'Quilboar', UNDEAD: 'Undead', NEUTRAL: 'Neutral', ALL: 'All', PET: 'Pet' };
+  const tribeNames = { ABERRATION: 'Aberrations', BEAST: 'Beast', DEMON: 'Demon', DRAGON: 'Dragon', ELEMENTAL: 'Elemental', MECHANICAL: 'Mech', MECH: 'Mech', MURLOC: 'Murloc', NAGA: 'Naga*', PIRATE: 'Pirate', QUILBOAR: 'Quilboar', UNDEAD: 'Undead', NEUTRAL: 'Neutral', ALL: 'All', PET: 'Pet' };
   const mechanicNames = { ACTIVATE: 'Activate', AURA: 'Aura', AVENGE: 'Avenge', BATTLECRY: 'Battlecry', CHOOSE_ONE: 'Choose One', DEATHRATTLE: 'Deathrattle', DISCOVER: 'Discover', DIVINE_SHIELD: 'Divine Shield', END_OF_TURN: 'End of Turn', LIFESTEAL: 'Lifesteal', MAGNETIC: 'Magnetic', MISSION: 'Mission', PASS: 'Pass', RALLY: 'Rally', REBORN: 'Reborn', REFRESH: 'Refresh', RESILIENT: 'Resilient', SPELLCRAFT: 'Spellcraft', START_OF_COMBAT: 'Start of Combat', START_OF_TURN: 'Start of Turn', STEALTH: 'Stealth', TAUNT: 'Taunt', VENOMOUS: 'Venomous', WINDFURY: 'Windfury' };
   const nonCardReferenceNames = new Set(['AVENGE', 'TRIPLE REWARD']);
   const keywordCache = new WeakMap();
