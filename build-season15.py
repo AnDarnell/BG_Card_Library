@@ -202,6 +202,7 @@ patch_37_2_overrides = {
     "Divine Sparkbot": {"tier": 4, "health": 1},
     "Efficient Engineer": {"tier": 5, "keywords": []},
     "Wizened Captain": {"tier": 6, "attack": 6, "health": 6},
+    "Catacomb Crasher": {"tier": 6, "attack": 4, "health": 10}
 }
 for card_id, source in selected.items():
     updates = patch_37_2_overrides.get(source.get("name"))
