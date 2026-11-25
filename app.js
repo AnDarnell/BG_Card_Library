@@ -222,7 +222,7 @@
     const id = String(card.dbfId);
     const imageUrl = cardImageUrl(card);
     const imageSource = cardImageSource(card);
-    const tags = [card.isNew ? '<span class="card-tag new-badge">NEW</span>' : '', card.isChanged ? '<span class="card-tag changed-badge">Chg.</span>' : '', card.isReturning ? '<span class="card-tag returning-badge">Ret.</span>' : ''].filter(Boolean).join('');
+    const tags = [card.isNew ? '<span class="card-tag new-badge">New</span>' : '', card.isChanged ? '<span class="card-tag changed-badge">Chg.</span>' : '', card.isReturning ? '<span class="card-tag returning-badge">Ret.</span>' : ''].filter(Boolean).join('');
     return `<article class="minion-card" data-card-id="${id}">
       <button class="card-preview" data-action="details" aria-label="View details for ${escapeHtml(card.name)}"><div class="card-image-wrap"><img class="card-image" data-card-art="${escapeHtml(card.id)}" data-image-source="${imageSource}" loading="lazy" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(card.name)}" onerror="imageFallback(this)" onload="imageLoaded(this)" />${tags ? `<span class="card-tags">${tags}</span>` : ''}</div></button>
     </article>`;
